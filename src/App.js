@@ -1,26 +1,62 @@
 import React from "react";
 import "./App.css";
+import { useState } from "react";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid2";
+import IncomeModal from './components/IncomeModal/IncomeModal'
+import ExpenseModal from "./components/ExpenseModal/ExpenseModal";
+
+
+
 
 function App() {
+  const [walletBalance, setWalletBalance] = useState(5000);
+  const [expenses , setExpenses] = useState(0);
+
+  const [openIncomeModal, setOpenIncomeModal] = useState(false);
+  const [openExpenseModal, setOpenExpenseModal] = useState(false);
+  // add income modal
+
+  const handleOpenIncome =()=>{
+    setOpenIncomeModal(true);
+  }
+  const handleCloseIncome =()=>{
+    setOpenIncomeModal(false);
+  }
+
+  const handleOpenExpense=()=>{
+    setOpenExpenseModal(true)
+  }
+  const handleCloseExpense=()=>{
+    setOpenExpenseModal(false)
+  }
+
+
+  //method to update the wallet balance which is built by lifting state up from the modal
+  const updateWalletBalance=(amount)=>{
+    setWalletBalance((prevValue)=>prevValue+(Number(amount)));
+  }
+
+
+
+
   return (
     <div className="App">
       <header>
         <h1 style={{ color: "white" }}>Expense Tracker</h1>
       </header>
       <section className="section">
-        <Grid container spacing={2} sx={{padding:'50px'}}>
-          <Grid size={{ xs: 12, md: 4 }} >
+        <Grid container spacing={2} sx={{ padding: "50px" }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Card className="expense-card">
-              <h3>Wallet Balance : 5000</h3>
-              <button>+ Add Income</button>
+              <h3>Wallet Balance : {walletBalance}</h3>
+              <button onClick={handleOpenIncome}>+ Add Income</button>
             </Card>
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <Card className="expense-card">
-              <h3>Expenses: {}</h3>
-              <button>+ Add Expenses</button>
+              <h3>Expenses: {expenses}</h3>
+              <button onClick={handleOpenExpense}>+ Add Expenses</button>
             </Card>
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
@@ -38,7 +74,18 @@ function App() {
           </Grid>
         </Grid>
       </section>
+      
+      
+      {/* Modal code */}
+      <IncomeModal open={openIncomeModal} handleClose={handleCloseIncome} updateBalance={updateWalletBalance}/>
+
+      <ExpenseModal open={openExpenseModal} handleClose={handleCloseExpense}/>
+
     </div>
+
+
+
+
   );
 }
 
