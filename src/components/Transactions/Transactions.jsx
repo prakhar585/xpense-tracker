@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import LocalPizzaIcon from '@mui/icons-material/LocalPizza';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
@@ -9,12 +9,6 @@ import { Box } from '@mui/material';
 import { Margin } from '@mui/icons-material';
 
 function Transactions({item}) {
-
-   
-
-
-
-
   return (
     <div style={{margin:'10px'}}>
     <Card sx={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
@@ -28,10 +22,9 @@ function Transactions({item}) {
             </div>
         </Box>
         <CardActions>
-            <button >delete</button>
+            <button>delete</button>
             <button>edit</button>
         </CardActions>
-
     </Card>
       
     </div>
