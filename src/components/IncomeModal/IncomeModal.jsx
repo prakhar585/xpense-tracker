@@ -29,9 +29,7 @@ export default function BasicModal({ open, handleClose, updateBalance }) {
     updateBalance(balance);
     enqueueSnackbar("Wallet Balance Updated",{variant: 'success', anchorOrigin: { vertical: "bottom", horizontal: "center" },});
     setBalance("");
-    setTimeout(() => {
-      handleClose();
-    }, 1000);
+   
   };
 
   return (

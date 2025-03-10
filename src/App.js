@@ -1,10 +1,11 @@
 import React from "react";
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid2";
 import IncomeModal from './components/IncomeModal/IncomeModal'
 import ExpenseModal from "./components/ExpenseModal/ExpenseModal";
+import Transactions from "./components/Transactions/Transactions";
 
 
 
@@ -12,10 +13,20 @@ import ExpenseModal from "./components/ExpenseModal/ExpenseModal";
 function App() {
   const [walletBalance, setWalletBalance] = useState(5000);
   const [expenses , setExpenses] = useState(0);
+  const [expenseList , setExpenseList ] = useState([]);
 
   const [openIncomeModal, setOpenIncomeModal] = useState(false);
   const [openExpenseModal, setOpenExpenseModal] = useState(false);
   // add income modal
+
+  useEffect(() => {
+    const savedExpenses = JSON.parse(localStorage.getItem("expenses")) || [];
+    setExpenseList(savedExpenses);
+  }, []);
+  
+  useEffect(() => {
+    localStorage.setItem("expenses", JSON.stringify(expenseList));
+  }, [expenseList]);
 
   const handleOpenIncome =()=>{
     setOpenIncomeModal(true);
@@ -35,6 +46,13 @@ function App() {
   //method to update the wallet balance which is built by lifting state up from the modal
   const updateWalletBalance=(amount)=>{
     setWalletBalance((prevValue)=>prevValue+(Number(amount)));
+  }
+
+  const updateTransactionList =(data)=>{
+    setExpenses((prev)=>prev+Number(data.price));
+   
+   setWalletBalance((prev) => prev - Number(data.price)); 
+   setExpenseList((prevList) => [...prevList, data]);
   }
 
 
@@ -67,7 +85,8 @@ function App() {
       <section className="section">
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 8 }}>
-            <Card>Recent Transactions</Card>
+           {expenseList.map((item, index)=>(<Transactions key={index} item={item}/>))}
+            
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <Card>Top Expenses</Card>
@@ -79,7 +98,7 @@ function App() {
       {/* Modal code */}
       <IncomeModal open={openIncomeModal} handleClose={handleCloseIncome} updateBalance={updateWalletBalance}/>
 
-      <ExpenseModal open={openExpenseModal} handleClose={handleCloseExpense}/>
+      <ExpenseModal open={openExpenseModal} handleClose={handleCloseExpense} updateExpense ={updateTransactionList}/>
 
     </div>
 
